@@ -6,8 +6,8 @@ import os
 import subprocess
 
 def pullFunction(folder_father, self):
-  print(folder_father)
-  print(os.listdir(folder_father))
+  # print(folder_father)
+  # print(os.listdir(folder_father))
   for index, folderChild in enumerate(os.listdir(folder_father)):
     if (folderChild != "checked"):
       print("*" * 10 + " " + folderChild + " " + "*" * 10)
@@ -17,6 +17,9 @@ def pullFunction(folder_father, self):
       subprocess.check_call("git pull",shell=True)
       # print(subprocess.check_call("git pull",shell=True))
       self.label = Label(self, text=folderChild+" Pull Done!").grid(row=index+3,column=4)
+    elif (len(os.listdir(folder_father)) == 1 and folderChild == "checked"):
+      messagebox.showinfo("Message","It's not have Folder Git!")
+
   messagebox.showinfo("Message","Pull Successfully!")
   # subprocess.call("taskkill /IM Python* /F",shell=True)
   # os.system("pause")
@@ -28,6 +31,7 @@ def cloneFunction(listGit,pathFolder,self):
   open('checked', 'a').close()
   pull_button = Button(self, text = "Pull", command = self.pull)
   pull_button.grid(row=1,column=3)
+  self.isPull = True
 
 
 title = "Tool Auto Git Pull"
@@ -62,12 +66,12 @@ class App(Frame):
       file = Menu(menu)
       file.add_command(label = "Exit", command = self.exit_app)
 
-      about = Menu(menu)
-      about.add_command(label = "About Me", command = self.about_me)
+      # about = Menu(menu)
+      # about.add_command(label = "About Me", command = self.about_me)
       
       # add menu
-      menu.add_cascade(label = "File", menu = file )
-      menu.add_cascade(label = "Help", menu = about)
+      # menu.add_cascade(label = "File", menu = file )
+      # menu.add_cascade(label = "Help", menu = about)
     
     def pull(self):
       if self.isPull:
@@ -89,12 +93,8 @@ class App(Frame):
       img.place(x=0,y=0)
 
     def about_me(self):
-      # self.input = self.textGet.get()
-      # print(self.input)
-      self.openfile()
-      a = self.dataReadFromFile.split("\n")
-      print(a)
-      print("ABOUT ME")
+      text1 = Label(self, text="Đôn Đẹp Trai")
+      text1.grid(row=3,column=2)
 
     def choose_folder(self):
       choosePath = filedialog.askdirectory()
@@ -121,7 +121,7 @@ class App(Frame):
         pull_button = Button(self, text = "Pull", command = self.pull)
         pull_button.grid(row=1,column=3)
       elif self.isEmptyFolder:
-        clone_button = Button(self, text = "Clone", command = self.clone)
+        clone_button = Button(self, text = "Choose List Git Clone", command = self.clone)
         clone_button.grid(row=1,column=4)
 
       # print(self.input.split(','))
@@ -144,6 +144,7 @@ class App(Frame):
 
     def exit_app(self):
       exit()
+
 # create the application
 root = Tk()
 root.geometry("600x300")
